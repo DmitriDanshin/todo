@@ -1,14 +1,19 @@
-// 7
+// 8
 
 import React, {Component} from 'react';
 
 import AppHeader from "../app-header/app-header";
 import SearchPanel from "../search-panel/search-panel";
 import TodoList from "../todo-list/todo-list";
+import AddNewList from "../add-new-list/add-new-list";
 
 import './app.scss';
 
+
 export default class App extends Component {
+
+    maxId = 100;
+
     deleteItem = (id) => {
         this.setState(({todoData}) => {
             const idx = todoData.findIndex((el) => el.id === id );
@@ -23,7 +28,20 @@ export default class App extends Component {
             }
         });
     }
+    addItem = (text) =>{
+        const newItem = {
+            label: text,
+            important: false,
+            id: this.maxId++,
+        }
 
+        this.setState(({todoData})=>{
+            const newArr = [...todoData, newItem];
+            return {
+                todoData: newArr
+            };
+        });
+    };
     state = {
         todoData: [
             {label: "Drink Coffee", important: false, bold: true, id: 1},
@@ -43,6 +61,7 @@ export default class App extends Component {
                 <AppHeader {...this.todoHeader}/>
                 <SearchPanel/>
                 <TodoList todos={this.state.todoData} onDeleted={(id) => this.deleteItem(id)}/>
+                <AddNewList onItemAdded={this.addItem}/>
             </div>
         );
     };
