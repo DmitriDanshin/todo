@@ -16,6 +16,7 @@ export default class TodoListItem extends Component {
         if (important) {
             classNames += ' important';
         }
+
         return (
             <span className={classNames}>
                  <span className="todo-list-item-label" onClick={onToggleDone}>

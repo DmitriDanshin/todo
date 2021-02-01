@@ -3,19 +3,40 @@ import './item-status-filter.scss';
 
 
 export default class ItemStatusFilter extends Component {
+    buttons = [{
+        name: 'all',
+        label: 'All'
+    },
+        {
+            name: 'active',
+            label: 'Active'
+        },
+        {
+            name: 'done',
+            label: 'Done'
+        }]
 
     render() {
+
+        const {filter, onFilterChanged} = this.props;
+
+        const buttons = this.buttons.map(({name, label}) => {
+
+            const isActive = filter === name;
+            const clazz = isActive ? 'btn-info' : 'btn-outline-secondary'
+
+            return (
+                <label className={`btn ${clazz}`} key={name}>
+                    <input type="radio" name="options" id={name} autoComplete="off"
+                           onClick={() => onFilterChanged(name)}/> {label}
+                </label>
+            )
+        });
+
+
         return (
-            <div className="btn-group btn-group-toggle" data-toggle="buttons">
-                <label className={"btn btn-secondary active"}>
-                    <input type="radio" name="options" id="option1" autoComplete="off" /> All
-                </label>
-                <label className={"btn btn-secondary"}>
-                    <input type="radio" name="options" id="option2" autoComplete="off" /> Active
-                </label>
-                <label className={"btn btn-secondary "}>
-                    <input type="radio" name="options" id="option3" autoComplete="off" /> Done
-                </label>
+            <div className="btn-group btn-group-toggle" data-toggle="buttons" onChange={this.props.toggleStatus}>
+                {buttons}
             </div>
         );
     }
